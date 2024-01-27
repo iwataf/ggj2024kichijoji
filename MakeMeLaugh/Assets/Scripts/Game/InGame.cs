@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
@@ -27,6 +25,7 @@ public class InGame : MonoBehaviour
     }
 
     [SerializeField] private MessagePanel _messagePanel = default;
+    [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
     [SerializeField] private GameObject _correctPref = default;
     [SerializeField] private GameObject _incorrectPref = default;
@@ -68,6 +67,8 @@ public class InGame : MonoBehaviour
             var correctText = _currentTalk.Sections[_currentSectionIndex].ContainsGags;
             var text = _messagePanel.TextTalk.text;
             _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
+
+            _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
         }
     }
 
@@ -99,6 +100,9 @@ public class InGame : MonoBehaviour
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
+
+        // Character
+        _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
     }
 
     private void ApplyTalk(TalkSection section)
