@@ -68,6 +68,8 @@ public class InGame : MonoBehaviour
         // Talk
         _currentTalk = _talks.First();
         Talk(_currentTalk.Sections);
+
+        Fader.Instance.FadeIn();
     }
 
     private void Talk(TalkSection[] sections) {
