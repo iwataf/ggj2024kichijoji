@@ -24,6 +24,7 @@ public class InGame : MonoBehaviour
         public TalkSection[] Sections;
     }
 
+    [SerializeField] private InGameUI _ingameUI = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
@@ -37,6 +38,8 @@ public class InGame : MonoBehaviour
 
     private int _currentSectionIndex = 0;
     private bool _answered = false;
+
+    private int _lifes = 3;
 
     public void OnClickMessageWindow()
     {
@@ -70,6 +73,17 @@ public class InGame : MonoBehaviour
 
             _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
         }
+
+        if (!_answered && !_currentTalk.Sections[_currentSectionIndex].IsContainsGags())
+        {
+            if (_lifes == 0)
+            {
+                Debug.Log("Game Over!");
+            }
+
+            _lifes = Math.Max(0, _lifes - 1);
+            _ingameUI.SetLifeValue(_lifes);
+        }
     }
 
     private void Start()
@@ -77,6 +91,8 @@ public class InGame : MonoBehaviour
         // Talk
         _currentTalkIndex = 0;
         Talk(_currentTalk.Sections.First());
+
+        _ingameUI.SetLifeValue(_lifes);
 
         Fader.Instance.FadeIn();
     }
