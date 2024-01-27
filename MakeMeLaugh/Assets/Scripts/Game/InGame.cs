@@ -13,7 +13,12 @@ public class InGame : MonoBehaviour
         public string Name;
         [TextArea]
         public string Talk;
-        public bool ContainsGags;
+        public string ContainsGags = string.Empty;
+
+        public bool IsContainsGags()
+        {
+            return ContainsGags != string.Empty;
+        }
     }
 
     [Serializable]
@@ -22,7 +27,6 @@ public class InGame : MonoBehaviour
     }
 
     [SerializeField] private MessagePanel _messagePanel = default;
-    [SerializeField] private AnswerPanel _answerPanel = default;
     [Header("Effect")]
     [SerializeField] private GameObject _correctPref = default;
     [SerializeField] private GameObject _incorrectPref = default;
@@ -31,10 +35,11 @@ public class InGame : MonoBehaviour
 
     private TalkData _currentTalk = default;
     private int _currentSectionIndex = 0;
+    private bool _answered = false;
 
     public void OnClickMessageWindow()
     {
-        GameObject pref = _currentTalk.Sections[_currentSectionIndex].ContainsGags ? _correctPref : _incorrectPref;
+        GameObject pref = _currentTalk.Sections[_currentSectionIndex].IsContainsGags() ? _correctPref : _incorrectPref;
 
         var mousePos = Input.mousePosition;
         var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
@@ -53,12 +58,19 @@ public class InGame : MonoBehaviour
         sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
 
         sequence.OnComplete(() => { Destroy(effect); });
+
+        if (!_answered && _currentTalk.Sections[_currentSectionIndex].IsContainsGags())
+        {
+            _answered = true;
+
+            var correctText = _currentTalk.Sections[_currentSectionIndex].ContainsGags;
+            var text = _messagePanel.TextTalk.text;
+            _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
+        }
     }
 
     private void Start()
     {
-        _answerPanel.gameObject.SetActive(false);
-
         // Talk
         _currentTalk = _talks.First();
         Talk(_currentTalk.Sections.First());
@@ -109,5 +121,7 @@ public class InGame : MonoBehaviour
 
         _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
         Talk(_currentTalk.Sections[_currentSectionIndex]);
+
+        _answered = false;
     }
 }
