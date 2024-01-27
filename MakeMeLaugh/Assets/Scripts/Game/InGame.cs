@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DG.Tweening;
 
 public class InGame : MonoBehaviour
 {
@@ -13,19 +12,17 @@ public class InGame : MonoBehaviour
         public string Name;
         [TextArea]
         public string Talk;
-        public bool ContainsGags;
     }
 
     [Serializable]
     public class TalkData {
         public TalkSection[] Sections;
+        public string[] Choices;
+        public int CorrectAnswerIndex;
     }
 
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private AnswerPanel _answerPanel = default;
-    [Header("Effect")]
-    [SerializeField] private GameObject _correctPref = default;
-    [SerializeField] private GameObject _incorrectPref = default;
     [Header("Talk")]
     [SerializeField] private TalkData[] _talks = default;
 
@@ -34,25 +31,34 @@ public class InGame : MonoBehaviour
 
     public void OnClickMessageWindow()
     {
-        GameObject pref = _currentTalk.Sections[_currentSectionIndex].ContainsGags ? _correctPref : _incorrectPref;
+        Debug.Log("Click");
+        if (_currentSectionIndex + 1 < _currentTalk.Sections.Length)
+        {
+            _currentSectionIndex += 1;
+            ApplyTalk(_currentTalk.Sections[_currentSectionIndex]);
+        } else if (_answerPanel.gameObject.activeInHierarchy == false) {
+            _messagePanel.TextName.text = "";
+            _messagePanel.TextTalk.text = "回答の時間です";
 
-        var mousePos = Input.mousePosition;
-        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
+            var choices = _currentTalk.Choices;
+            _answerPanel.Setup(choices, (index) => {
+                Debug.Log($"「{choices[index]}」を回答として選択。");
 
-        var effect = Instantiate(pref);
-        effect.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
-        effect.transform.localScale = Vector3.zero;
+                if (_currentTalk.CorrectAnswerIndex == index)
+                {
+                    Debug.Log("正解です。");
+                } else {
+                    Debug.Log("不正解です。");
+                }
 
-        var sequence = DOTween.Sequence();
-        sequence.Append(effect.transform.DOScale(4.0f, 0.7f).SetEase(Ease.InSine));
-        sequence.Join(effect.transform.DORotate(new Vector3(0, 0, 720), 0.7f, RotateMode.WorldAxisAdd));
-        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
-        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
-        sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
+                _answerPanel.gameObject.SetActive(false);
 
-        sequence.OnComplete(() => { Destroy(effect); });
+                // Reset
+                _currentSectionIndex = 0;
+                ApplyTalk(_currentTalk.Sections[_currentSectionIndex]);
+            });
+            _answerPanel.gameObject.SetActive(true);
+        }
     }
 
     private void Start()
@@ -61,53 +67,19 @@ public class InGame : MonoBehaviour
 
         // Talk
         _currentTalk = _talks.First();
-        Talk(_currentTalk.Sections.First());
+        Talk(_currentTalk.Sections);
+
+        Fader.Instance.FadeIn();
     }
 
-    private void Talk(TalkSection section) {
-        ApplyTalk(section);
-
-        // 初期設定
-        {
-            var pos = _messagePanel.transform.localPosition;
-            pos.x = -1920;
-            _messagePanel.transform.localPosition = pos;
-
-            _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        }
-
-        // Animation
-        var sequence = DOTween.Sequence();
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.0f).OnComplete(OnEndEnterAnimation));
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 2.0f).OnComplete(OnEndWaitAnimation));
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 1.0f).OnComplete(OnEndLeaveAnimation));
+    private void Talk(TalkSection[] sections) {
+        var first = sections.First();
+        ApplyTalk(first);
     }
 
     private void ApplyTalk(TalkSection section)
     {
         _messagePanel.TextName.text = section.Name;
         _messagePanel.TextTalk.text = section.Talk;
-    }
-
-    private void OnEndEnterAnimation()
-    {
-        Debug.Log("移動完了");
-
-        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
-    }
-
-    private void OnEndWaitAnimation()
-    {
-        Debug.Log("待機終了");
-
-        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-    }
-
-    private void OnEndLeaveAnimation()
-    {
-        Debug.Log("移動完了");
-
-        _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
-        Talk(_currentTalk.Sections[_currentSectionIndex]);
     }
 }
