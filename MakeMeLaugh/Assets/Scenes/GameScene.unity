@@ -273,6 +273,7 @@ MonoBehaviour:
   _characterOji: {fileID: 343050631}
   _correctPref: {fileID: 1838685944340319851, guid: 8a2b074961c31ce4e8e47973cf8a2e26, type: 3}
   _incorrectPref: {fileID: 2719619001154230043, guid: c3ddfd51a2dd890449cd6fbb4ad76f8e, type: 3}
+  _concentrationLine: {fileID: 4495561583937552659, guid: 855011348b7bac544b2127863bc7c180, type: 3}
   _talks:
   - Sections:
     - Name: "\u304A\u3058\u3055\u3093"

@@ -30,6 +30,7 @@ public class InGame : MonoBehaviour
     [Header("Effect")]
     [SerializeField] private GameObject _correctPref = default;
     [SerializeField] private GameObject _incorrectPref = default;
+    [SerializeField] private GameObject _concentrationLine = default;
     [Header("Talk")]
     [SerializeField] private TalkData[] _talks = default;
 
@@ -65,6 +66,9 @@ public class InGame : MonoBehaviour
             sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
 
             sequence.OnComplete(() => { Destroy(effect); });
+
+            var line = Instantiate(_concentrationLine);
+            line.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
         }
 
         if (!_answered && _currentTalk.Sections[_currentSectionIndex].IsContainsGags())
