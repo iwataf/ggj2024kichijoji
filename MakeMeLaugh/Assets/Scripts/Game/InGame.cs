@@ -13,13 +13,12 @@ public class InGame : MonoBehaviour
         public string Name;
         [TextArea]
         public string Talk;
+        public bool ContainsGags;
     }
 
     [Serializable]
     public class TalkData {
         public TalkSection[] Sections;
-        public string[] Choices;
-        public int CorrectAnswerIndex;
     }
 
     [SerializeField] private MessagePanel _messagePanel = default;
@@ -35,9 +34,7 @@ public class InGame : MonoBehaviour
 
     public void OnClickMessageWindow()
     {
-        Debug.Log("Click");
-
-        GameObject pref = _currentSectionIndex % 2 == 0 ? _correctPref : _incorrectPref;
+        GameObject pref = _currentTalk.Sections[_currentSectionIndex].ContainsGags ? _correctPref : _incorrectPref;
 
         var mousePos = Input.mousePosition;
         var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
