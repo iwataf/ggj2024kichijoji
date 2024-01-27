@@ -1,7 +1,7 @@
+using DG.Tweening;
 using System;
 using System.Linq;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 public class InGame : MonoBehaviour
@@ -21,12 +21,14 @@ public class InGame : MonoBehaviour
     }
 
     [Serializable]
-    public class TalkData {
+    public class TalkData
+    {
         public TalkSection[] Sections;
     }
 
     [SerializeField] private InGameUI _ingameUI = default;
     [SerializeField] private ResultCtrl _resultCtrl = default;
+    [SerializeField] private TipsPanelCtrl _tipsPanelCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
@@ -115,7 +117,9 @@ public class InGame : MonoBehaviour
                 if (isGameOver)
                 {
                     OpenResult();
-                } else {
+                }
+                else
+                {
                     OnEndLeaveAnimation();
                 }
             };
@@ -129,18 +133,23 @@ public class InGame : MonoBehaviour
 
     private void Start()
     {
-        // Talk
-        _currentTalkIndex = 0;
-        Talk(_currentTalk.Sections.First());
-
         _ingameUI.SetLifeValue(_lifes);
 
         Sound.Instance.PlayBGM(Sound.bgmValue.game);
 
-        Fader.Instance.FadeIn();
+        Fader.Instance.FadeIn(() =>
+        {
+            _tipsPanelCtrl.OpenTips(() =>
+            {
+                // Talk
+                _currentTalkIndex = 0;
+                Talk(_currentTalk.Sections.First());
+            });
+        });
     }
 
-    private void Talk(TalkSection section) {
+    private void Talk(TalkSection section)
+    {
         ApplyTalk(section);
 
         // 初期設定
@@ -193,13 +202,17 @@ public class InGame : MonoBehaviour
             if (_talks.Length <= _currentTalkIndex + 1)
             {
                 OpenResult();
-            } else {
+            }
+            else
+            {
                 _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
                 _currentSectionIndex = 0;
 
                 Talk(_currentTalk.Sections[_currentSectionIndex]);
             }
-        } else {
+        }
+        else
+        {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
             Talk(_currentTalk.Sections[_currentSectionIndex]);
         }
@@ -210,7 +223,7 @@ public class InGame : MonoBehaviour
     private void OpenResult()
     {
         int sumQuestion = 0;
-        foreach(var talk in _talks)
+        foreach (var talk in _talks)
         {
             sumQuestion += talk.Sections.Count(s => s.IsContainsGags());
         }

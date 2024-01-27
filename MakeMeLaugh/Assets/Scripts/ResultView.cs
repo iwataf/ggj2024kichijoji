@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class ResultView : MonoBehaviour
 {
@@ -11,5 +9,4 @@ public class ResultView : MonoBehaviour
     {
         _scoreText.text = score;
     }
-
 }

@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class Fader : MonoBehaviour
 {
-    private Color fadeInColor = new Color(0,0,0,0);
-    private Color fadeOutColor = new Color(0,0,0,1);
+    private Color fadeInColor = new Color(0, 0, 0, 0);
+    private Color fadeOutColor = new Color(0, 0, 0, 1);
 
     public bool isFade;
 
@@ -31,7 +29,7 @@ public class Fader : MonoBehaviour
     private void Awake()
     {
         if (instance == null)
-        {          
+        {
             instance = this;
         }
         else
@@ -41,14 +39,15 @@ public class Fader : MonoBehaviour
         //var obj = this.transform;
     }
 
-    public void FadeIn()
+    public void FadeIn(System.Action action = null)
     {
         var fader = this.gameObject;
         Sequence sequence = DOTween.Sequence();
         var Image = fader.transform.GetComponent<Image>();
-        sequence.Append(Image.DOColor ( fadeInColor,1.0f ))
+        sequence.Append(Image.DOColor(fadeInColor, 1.0f))
                 .OnComplete(() =>
                 {
+                    action?.Invoke();
                     isFade = false;
                     fader.SetActive(false);
                 });
@@ -61,14 +60,14 @@ public class Fader : MonoBehaviour
         fader.SetActive(true);
         Sequence sequence = DOTween.Sequence();
         var Image = fader.transform.GetComponent<Image>();
-        sequence.Append(Image.DOColor ( fadeOutColor,1.0f ))
+        sequence.Append(Image.DOColor(fadeOutColor, 1.0f))
                 .OnComplete(() =>
                 {
                     isFade = false;
-                    if(action != null)
+                    if (action != null)
                     {
                         action();
-                    } 
+                    }
                 });
         isFade = true;
     }
