@@ -183,6 +183,11 @@ public class InGame : MonoBehaviour
 
     private void OnEndLeaveAnimation()
     {
+        if (!_answered && _currentTalk.Sections[_currentSectionIndex].IsContainsGags())
+        {
+            Debug.Log("Through");
+        }
+
         if (_currentTalk.Sections.Length <= _currentSectionIndex + 1)
         {
             if (_talks.Length <= _currentTalkIndex + 1)
