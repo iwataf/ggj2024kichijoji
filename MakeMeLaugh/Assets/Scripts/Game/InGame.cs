@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class InGame : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class InGame : MonoBehaviour
     }
 
     [SerializeField] private InGameUI _ingameUI = default;
+    [SerializeField] private ResultCtrl _resultCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
@@ -42,6 +44,7 @@ public class InGame : MonoBehaviour
     private Sequence _messageSequence = null;
 
     private int _lifes = 3;
+    private int _numCorrectAnswer = 0;
 
     public void OnClickMessageWindow()
     {
@@ -75,6 +78,8 @@ public class InGame : MonoBehaviour
         {
             _answered = true;
 
+            _numCorrectAnswer += 1;
+
             var correctText = _currentTalk.Sections[_currentSectionIndex].ContainsGags;
             var text = _messagePanel.TextTalk.text;
             _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
@@ -82,10 +87,15 @@ public class InGame : MonoBehaviour
             _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
         }
 
+        var isGameOver = false;
+
         if (!_answered && !_currentTalk.Sections[_currentSectionIndex].IsContainsGags())
         {
+            _answered = true;
+
             if (_lifes == 0)
             {
+                isGameOver = true;
                 Debug.Log("Game Over!");
             }
 
@@ -95,17 +105,25 @@ public class InGame : MonoBehaviour
 
         // Stop Animation
         {
-            Debug.Log("Stop Animation");
-
             _messageSequence.Kill();
             _messageSequence = null;
 
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
+            TweenCallback callback = () =>
+            {
+                if (isGameOver)
+                {
+                    OpenResult();
+                } else {
+                    OnEndLeaveAnimation();
+                }
+            };
+
             // Animation
             var sequence = DOTween.Sequence();
             sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.5f + 0.3f).OnComplete(OnEndWaitAnimation));
-            sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
+            sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(callback).SetEase(Ease.OutSine));
         }
     }
 
@@ -153,31 +171,46 @@ public class InGame : MonoBehaviour
 
     private void OnEndEnterAnimation()
     {
-        Debug.Log("移動完了");
-
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     private void OnEndWaitAnimation()
     {
-        Debug.Log("待機終了");
-
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     private void OnEndLeaveAnimation()
     {
-        Debug.Log("移動完了");
         if (_currentTalk.Sections.Length <= _currentSectionIndex + 1)
         {
-            _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
-            _currentSectionIndex = 0;
+            if (_talks.Length <= _currentTalkIndex + 1)
+            {
+                OpenResult();
+            } else {
+                _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
+                _currentSectionIndex = 0;
+
+                Talk(_currentTalk.Sections[_currentSectionIndex]);
+            }
         } else {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
+            Talk(_currentTalk.Sections[_currentSectionIndex]);
         }
 
-        Talk(_currentTalk.Sections[_currentSectionIndex]);
-
         _answered = false;
+    }
+
+    private void OpenResult()
+    {
+        int sumQuestion = 0;
+        foreach(var talk in _talks)
+        {
+            sumQuestion += talk.Sections.Count(s => s.IsContainsGags());
+        }
+
+        _resultCtrl.OpenResult(_numCorrectAnswer, sumQuestion, (val) =>
+        {
+            Fader.Instance.FadeOut(() => { SceneManager.LoadScene("Title"); });
+        });
     }
 }

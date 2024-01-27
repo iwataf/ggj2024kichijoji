@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ingameUI: {fileID: 305979284}
+  _resultCtrl: {fileID: 1952157834}
   _messagePanel: {fileID: 1299888198}
   _characterOji: {fileID: 343050631}
   _correctPref: {fileID: 1838685944340319851, guid: 8a2b074961c31ce4e8e47973cf8a2e26, type: 3}
@@ -1956,6 +1957,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2052839019115331901, guid: 0ac939a4c6e6fac4aad113bbe378b4f0, type: 3}
   m_PrefabInstance: {fileID: 1952157832}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1952157834 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3217064526108203023, guid: 0ac939a4c6e6fac4aad113bbe378b4f0, type: 3}
+  m_PrefabInstance: {fileID: 1952157832}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7717a4781921047903edea85103f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2026058713
 GameObject:
   m_ObjectHideFlags: 0

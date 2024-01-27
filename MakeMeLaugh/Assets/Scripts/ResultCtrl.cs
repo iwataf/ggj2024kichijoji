@@ -23,5 +23,4 @@ public class ResultCtrl : MonoBehaviour
         gameObject.SetActive(true);
         m_isClickCloseButton = action;
     }
-
 }
