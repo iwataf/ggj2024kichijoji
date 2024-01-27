@@ -24,6 +24,9 @@ public class InGame : MonoBehaviour
 
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private AnswerPanel _answerPanel = default;
+    [Header("Effect")]
+    [SerializeField] private GameObject _correctPref = default;
+    [SerializeField] private GameObject _incorrectPref = default;
     [Header("Talk")]
     [SerializeField] private TalkData[] _talks = default;
 
@@ -33,6 +36,26 @@ public class InGame : MonoBehaviour
     public void OnClickMessageWindow()
     {
         Debug.Log("Click");
+
+        GameObject pref = _currentSectionIndex % 2 == 0 ? _correctPref : _incorrectPref;
+
+        var mousePos = Input.mousePosition;
+        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
+
+        var effect = Instantiate(pref);
+        effect.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
+        effect.transform.localScale = Vector3.zero;
+
+        var sequence = DOTween.Sequence();
+        sequence.Append(effect.transform.DOScale(4.0f, 0.7f).SetEase(Ease.InSine));
+        sequence.Join(effect.transform.DORotate(new Vector3(0, 0, 720), 0.7f, RotateMode.WorldAxisAdd));
+        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
+        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
+        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
+        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
+        sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
+
+        sequence.OnComplete(() => { Destroy(effect); });
     }
 
     private void Start()
@@ -49,9 +72,9 @@ public class InGame : MonoBehaviour
 
         // 初期設定
         {
-            var pos = _messagePanel.transform.position;
+            var pos = _messagePanel.transform.localPosition;
             pos.x = -1920;
-            _messagePanel.transform.position = pos;
+            _messagePanel.transform.localPosition = pos;
 
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
@@ -61,8 +84,6 @@ public class InGame : MonoBehaviour
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.0f).OnComplete(OnEndEnterAnimation));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 2.0f).OnComplete(OnEndWaitAnimation));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 1.0f).OnComplete(OnEndLeaveAnimation));
-
-        _talkSequence = sequence;
     }
 
     private void ApplyTalk(TalkSection section)

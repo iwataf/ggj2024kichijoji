@@ -509,6 +509,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _messagePanel: {fileID: 1299888198}
   _answerPanel: {fileID: 104871943}
+  _correctPref: {fileID: 1838685944340319851, guid: 8a2b074961c31ce4e8e47973cf8a2e26, type: 3}
+  _incorrectPref: {fileID: 2719619001154230043, guid: c3ddfd51a2dd890449cd6fbb4ad76f8e, type: 3}
   _talks:
   - Sections:
     - Name: "\u304A\u3058\u3055\u3093"
@@ -927,8 +929,8 @@ Canvas:
   m_GameObject: {fileID: 999671316}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1167696274}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -939,7 +941,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &999671320
 RectTransform:
@@ -1334,6 +1336,7 @@ GameObject:
   - component: {fileID: 1299888197}
   - component: {fileID: 1299888196}
   - component: {fileID: 1299888198}
+  - component: {fileID: 1299888199}
   m_Layer: 5
   m_Name: MessagePanel
   m_TagString: Untagged
@@ -1415,6 +1418,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textName: {fileID: 2079283559}
   _textTalk: {fileID: 1088163584}
+--- !u!225 &1299888199
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299888194}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1361171920
 GameObject:
   m_ObjectHideFlags: 0
