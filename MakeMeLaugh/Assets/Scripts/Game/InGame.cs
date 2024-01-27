@@ -132,7 +132,7 @@ public class InGame : MonoBehaviour
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
 
-        var waitTime = section.Talk.Length * 0.02f + 1.0f;
+        var waitTime = section.Talk.Length * 0.05f + 1.0f;
 
         // Animation
         var sequence = DOTween.Sequence();
