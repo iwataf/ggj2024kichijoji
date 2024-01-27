@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 public class InGame : MonoBehaviour
 {
@@ -32,33 +33,6 @@ public class InGame : MonoBehaviour
     public void OnClickMessageWindow()
     {
         Debug.Log("Click");
-        if (_currentSectionIndex + 1 < _currentTalk.Sections.Length)
-        {
-            _currentSectionIndex += 1;
-            ApplyTalk(_currentTalk.Sections[_currentSectionIndex]);
-        } else if (_answerPanel.gameObject.activeInHierarchy == false) {
-            _messagePanel.TextName.text = "";
-            _messagePanel.TextTalk.text = "回答の時間です";
-
-            var choices = _currentTalk.Choices;
-            _answerPanel.Setup(choices, (index) => {
-                Debug.Log($"「{choices[index]}」を回答として選択。");
-
-                if (_currentTalk.CorrectAnswerIndex == index)
-                {
-                    Debug.Log("正解です。");
-                } else {
-                    Debug.Log("不正解です。");
-                }
-
-                _answerPanel.gameObject.SetActive(false);
-
-                // Reset
-                _currentSectionIndex = 0;
-                ApplyTalk(_currentTalk.Sections[_currentSectionIndex]);
-            });
-            _answerPanel.gameObject.SetActive(true);
-        }
     }
 
     private void Start()
@@ -67,17 +41,55 @@ public class InGame : MonoBehaviour
 
         // Talk
         _currentTalk = _talks.First();
-        Talk(_currentTalk.Sections);
+        Talk(_currentTalk.Sections.First());
     }
 
-    private void Talk(TalkSection[] sections) {
-        var first = sections.First();
-        ApplyTalk(first);
+    private void Talk(TalkSection section) {
+        ApplyTalk(section);
+
+        // 初期設定
+        {
+            var pos = _messagePanel.transform.position;
+            pos.x = -1920;
+            _messagePanel.transform.position = pos;
+
+            _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        }
+
+        // Animation
+        var sequence = DOTween.Sequence();
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.0f).OnComplete(OnEndEnterAnimation));
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 2.0f).OnComplete(OnEndWaitAnimation));
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 1.0f).OnComplete(OnEndLeaveAnimation));
+
+        _talkSequence = sequence;
     }
 
     private void ApplyTalk(TalkSection section)
     {
         _messagePanel.TextName.text = section.Name;
         _messagePanel.TextTalk.text = section.Talk;
+    }
+
+    private void OnEndEnterAnimation()
+    {
+        Debug.Log("移動完了");
+
+        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+    }
+
+    private void OnEndWaitAnimation()
+    {
+        Debug.Log("待機終了");
+
+        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+    }
+
+    private void OnEndLeaveAnimation()
+    {
+        Debug.Log("移動完了");
+
+        _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
+        Talk(_currentTalk.Sections[_currentSectionIndex]);
     }
 }
