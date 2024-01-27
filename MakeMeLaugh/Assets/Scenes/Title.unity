@@ -826,7 +826,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 200}
-  m_SizeDelta: {x: 600, y: 150}
+  m_SizeDelta: {x: 720, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2067598528
 MonoBehaviour:
@@ -848,7 +848,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Make Me Laugh
+  m_text: "\u304A\u3062\u8AAD\u307F\n\uFF5E\u307E\u306030\u5206\u3067\u3059\u304B\uFF1F\uFF5E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9a8386a10bea704ca729712c1ec22e0, type: 2}
   m_sharedMaterial: {fileID: -4535450483218651600, guid: b9a8386a10bea704ca729712c1ec22e0, type: 2}
