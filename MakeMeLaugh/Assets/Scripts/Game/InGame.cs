@@ -33,7 +33,9 @@ public class InGame : MonoBehaviour
     [Header("Talk")]
     [SerializeField] private TalkData[] _talks = default;
 
-    private TalkData _currentTalk = default;
+    private TalkData _currentTalk => _talks[_currentTalkIndex];
+    private int _currentTalkIndex = 0;
+
     private int _currentSectionIndex = 0;
     private bool _answered = false;
 
@@ -72,7 +74,7 @@ public class InGame : MonoBehaviour
     private void Start()
     {
         // Talk
-        _currentTalk = _talks.First();
+        _currentTalkIndex = 0;
         Talk(_currentTalk.Sections.First());
 
         Fader.Instance.FadeIn();
@@ -120,8 +122,14 @@ public class InGame : MonoBehaviour
     private void OnEndLeaveAnimation()
     {
         Debug.Log("移動完了");
+        if (_currentTalk.Sections.Length <= _currentSectionIndex + 1)
+        {
+            _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
+            _currentSectionIndex = 0;
+        } else {
+            _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
+        }
 
-        _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
         Talk(_currentTalk.Sections[_currentSectionIndex]);
 
         _answered = false;
