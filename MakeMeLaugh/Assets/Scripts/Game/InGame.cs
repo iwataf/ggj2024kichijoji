@@ -1,34 +1,13 @@
-using DG.Tweening;
 using System;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 public class InGame : MonoBehaviour
 {
-    [Serializable]
-    public class TalkSection
-    {
-        public string Name;
-        [TextArea]
-        public string Talk;
-        public string ContainsGags = string.Empty;
-
-        public bool IsContainsGags()
-        {
-            return ContainsGags != string.Empty;
-        }
-    }
-
-    [Serializable]
-    public class TalkData
-    {
-        public TalkSection[] Sections;
-    }
-
     [SerializeField] private InGameUI _ingameUI = default;
     [SerializeField] private ResultCtrl _resultCtrl = default;
-    [SerializeField] private TipsPanelCtrl _tipsPanelCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
@@ -36,9 +15,9 @@ public class InGame : MonoBehaviour
     [SerializeField] private GameObject _incorrectPref = default;
     [SerializeField] private GameObject _concentrationLine = default;
     [Header("Talk")]
-    [SerializeField] private TalkData[] _talks = default;
+    [SerializeField] private TalkDataScriptable[] _talks = default;
 
-    private TalkData _currentTalk => _talks[_currentTalkIndex];
+    private TalkDataScriptable _currentTalk => _talks[_currentTalkIndex];
     private int _currentTalkIndex = 0;
 
     private int _currentSectionIndex = 0;
@@ -76,6 +55,7 @@ public class InGame : MonoBehaviour
             line.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
         }
 
+        // 正解
         if (!_answered && _currentTalk.Sections[_currentSectionIndex].IsContainsGags())
         {
             _answered = true;
@@ -87,8 +67,11 @@ public class InGame : MonoBehaviour
             _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
 
             _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
+
+            // TODO: 正解SEを鳴らす
         }
 
+        // 不正解
         var isGameOver = false;
 
         if (!_answered && !_currentTalk.Sections[_currentSectionIndex].IsContainsGags())
@@ -103,6 +86,8 @@ public class InGame : MonoBehaviour
 
             _lifes = Math.Max(0, _lifes - 1);
             _ingameUI.SetLifeValue(_lifes);
+
+            // TODO: 不正解SEを鳴らす
         }
 
         // Stop Animation
@@ -117,9 +102,7 @@ public class InGame : MonoBehaviour
                 if (isGameOver)
                 {
                     OpenResult();
-                }
-                else
-                {
+                } else {
                     OnEndLeaveAnimation();
                 }
             };
@@ -133,23 +116,18 @@ public class InGame : MonoBehaviour
 
     private void Start()
     {
+        // Talk
+        _currentTalkIndex = 0;
+        Talk(_currentTalk.Sections.First());
+
         _ingameUI.SetLifeValue(_lifes);
 
         Sound.Instance.PlayBGM(Sound.bgmValue.game);
 
-        Fader.Instance.FadeIn(() =>
-        {
-            _tipsPanelCtrl.OpenTips(() =>
-            {
-                // Talk
-                _currentTalkIndex = 0;
-                Talk(_currentTalk.Sections.First());
-            });
-        });
+        Fader.Instance.FadeIn();
     }
 
-    private void Talk(TalkSection section)
-    {
+    private void Talk(TalkDataScriptable.TalkSection section) {
         ApplyTalk(section);
 
         // 初期設定
@@ -174,7 +152,7 @@ public class InGame : MonoBehaviour
         _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
     }
 
-    private void ApplyTalk(TalkSection section)
+    private void ApplyTalk(TalkDataScriptable.TalkSection section)
     {
         _messagePanel.TextName.text = section.Name;
         _messagePanel.TextTalk.text = section.Talk;
@@ -202,17 +180,13 @@ public class InGame : MonoBehaviour
             if (_talks.Length <= _currentTalkIndex + 1)
             {
                 OpenResult();
-            }
-            else
-            {
+            } else {
                 _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
                 _currentSectionIndex = 0;
 
                 Talk(_currentTalk.Sections[_currentSectionIndex]);
             }
-        }
-        else
-        {
+        } else {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
             Talk(_currentTalk.Sections[_currentSectionIndex]);
         }
@@ -223,7 +197,7 @@ public class InGame : MonoBehaviour
     private void OpenResult()
     {
         int sumQuestion = 0;
-        foreach (var talk in _talks)
+        foreach(var talk in _talks)
         {
             sumQuestion += talk.Sections.Count(s => s.IsContainsGags());
         }
