@@ -92,11 +92,13 @@ public class InGame : MonoBehaviour
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
 
+        var waitTime = section.Talk.Length * 0.02f + 1.0f;
+
         // Animation
         var sequence = DOTween.Sequence();
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.0f).OnComplete(OnEndEnterAnimation));
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 2.0f).OnComplete(OnEndWaitAnimation));
-        sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 1.0f).OnComplete(OnEndLeaveAnimation));
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
+        sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
     }
 
     private void ApplyTalk(TalkSection section)
