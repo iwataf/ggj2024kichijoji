@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +5,7 @@ public class TitleCtrl : MonoBehaviour
 {
     public void OnClickGameStart()
     {
+        Sound.Instance.PlaySE(Sound.seValue.correct);
         Fader.Instance.FadeOut(GameSceneLoad);
     }
 
@@ -20,7 +19,7 @@ public class TitleCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void GameSceneLoad()

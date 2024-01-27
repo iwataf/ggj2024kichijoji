@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Sound : MonoBehaviour
@@ -22,11 +20,10 @@ public class Sound : MonoBehaviour
         wadaiko,
     }
 
-    [SerializeField] AudioClip[] bgm;
-    [SerializeField] AudioClip[] se;
-
-    private AudioClip selectBGM;
-    private AudioSource audioSource;
+    [SerializeField] private AudioClip[] bgm;
+    [SerializeField] private AudioClip[] se;
+    [SerializeField] private AudioSource bgmAudioSource;
+    [SerializeField] private AudioSource seAudioSource;
 
     public static Sound Instance;
 
@@ -44,23 +41,22 @@ public class Sound : MonoBehaviour
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = bgm[0];
+        //PlayBGM(0);
     }
 
     public void PlayBGM(bgmValue bgmNo)
     {
-        audioSource.clip = bgm[(int)bgmNo];
-        audioSource.Play();
+        bgmAudioSource.clip = bgm[(int)bgmNo];
+        bgmAudioSource.Play();
     }
 
     public void StopBGM()
     {
-        audioSource.Stop();
+        bgmAudioSource.Stop();
     }
 
     public void PlaySE(seValue seNo)
     {
-        audioSource.PlayOneShot(bgm[(int)seNo]);
+        seAudioSource.PlayOneShot(se[(int)seNo]);
     }
 }
