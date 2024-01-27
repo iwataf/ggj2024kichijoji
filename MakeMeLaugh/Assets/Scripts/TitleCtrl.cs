@@ -5,14 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class TitleCtrl : MonoBehaviour
 {
-    public void OnClickSampleScene()
+    public void OnClickGameStart()
     {
-        Fader.Instance.FadeOut(SampleSceneLoad);
+        Sound.Instance.PlaySE(Sound.seValue.correct);
+        Fader.Instance.FadeOut(GameSceneLoad);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        Sound.Instance.PlayBGM(Sound.bgmValue.title);
         Fader.Instance.FadeIn();
     }
 
@@ -22,7 +24,7 @@ public class TitleCtrl : MonoBehaviour
         
     }
 
-    private void SampleSceneLoad()
+    private void GameSceneLoad()
     {
         SceneManager.LoadScene("GameScene");
     }

@@ -135,6 +135,8 @@ public class InGame : MonoBehaviour
 
         _ingameUI.SetLifeValue(_lifes);
 
+        Sound.Instance.PlayBGM(Sound.bgmValue.game);
+
         Fader.Instance.FadeIn();
     }
 
