@@ -15,5 +15,4 @@ public class InGameUI : MonoBehaviour
             _lifes[i].Find("Off").gameObject.SetActive(!on);
         }
     }
-
 }

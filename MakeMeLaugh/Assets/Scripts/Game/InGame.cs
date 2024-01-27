@@ -38,30 +38,34 @@ public class InGame : MonoBehaviour
 
     private int _currentSectionIndex = 0;
     private bool _answered = false;
+    private Sequence _messageSequence = null;
 
     private int _lifes = 3;
 
     public void OnClickMessageWindow()
     {
-        GameObject pref = _currentTalk.Sections[_currentSectionIndex].IsContainsGags() ? _correctPref : _incorrectPref;
+        // Create effect
+        {
+            GameObject pref = _currentTalk.Sections[_currentSectionIndex].IsContainsGags() ? _correctPref : _incorrectPref;
 
-        var mousePos = Input.mousePosition;
-        var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
+            var mousePos = Input.mousePosition;
+            var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 0f));
 
-        var effect = Instantiate(pref);
-        effect.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
-        effect.transform.localScale = Vector3.zero;
+            var effect = Instantiate(pref);
+            effect.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
+            effect.transform.localScale = Vector3.zero;
 
-        var sequence = DOTween.Sequence();
-        sequence.Append(effect.transform.DOScale(4.0f, 0.7f).SetEase(Ease.InSine));
-        sequence.Join(effect.transform.DORotate(new Vector3(0, 0, 720), 0.7f, RotateMode.WorldAxisAdd));
-        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
-        sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-        sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
-        sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
+            var sequence = DOTween.Sequence();
+            sequence.Append(effect.transform.DOScale(4.0f, 0.7f).SetEase(Ease.InSine));
+            sequence.Join(effect.transform.DORotate(new Vector3(0, 0, 720), 0.7f, RotateMode.WorldAxisAdd));
+            sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
+            sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
+            sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
+            sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
+            sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
 
-        sequence.OnComplete(() => { Destroy(effect); });
+            sequence.OnComplete(() => { Destroy(effect); });
+        }
 
         if (!_answered && _currentTalk.Sections[_currentSectionIndex].IsContainsGags())
         {
@@ -83,6 +87,21 @@ public class InGame : MonoBehaviour
 
             _lifes = Math.Max(0, _lifes - 1);
             _ingameUI.SetLifeValue(_lifes);
+        }
+
+        // Stop Animation
+        {
+            Debug.Log("Stop Animation");
+
+            _messageSequence.Kill();
+            _messageSequence = null;
+
+            _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            // Animation
+            var sequence = DOTween.Sequence();
+            sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 1.5f + 0.3f).OnComplete(OnEndWaitAnimation));
+            sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
         }
     }
 
@@ -116,6 +135,7 @@ public class InGame : MonoBehaviour
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
+        _messageSequence = sequence;
 
         // Character
         _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
