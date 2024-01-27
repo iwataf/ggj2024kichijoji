@@ -679,7 +679,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1560552931}
         m_TargetAssemblyTypeName: TitleCtrl, Assembly-CSharp
-        m_MethodName: OnClickSampleScene
+        m_MethodName: OnClickGameStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
