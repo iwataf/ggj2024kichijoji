@@ -260,9 +260,21 @@ public class InGame : MonoBehaviour
             sumQuestion += talk.Sections.Count(s => s.IsContainsGags());
         }
 
+        var correctAnswerRate = (float)_numCorrectAnswer / sumQuestion;
+        EndingData.EndingType endingType;
+        if (correctAnswerRate <= 0.5f)
+        {
+            endingType = EndingData.EndingType.BAD;
+        } else if (correctAnswerRate < 0.8f)
+        {
+            endingType = EndingData.EndingType.NORMAL;
+        } else {
+            endingType = EndingData.EndingType.GOOD;
+        }
+
         _resultCtrl.OpenResult(_numCorrectAnswer, sumQuestion, (val) =>
         {
-            Fader.Instance.FadeOut(() => { SceneManager.LoadScene("Title"); });
+            Fader.Instance.FadeOut(() => { OpenEnding(endingType); });
         });
     }
 
