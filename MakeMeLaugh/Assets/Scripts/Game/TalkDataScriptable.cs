@@ -17,6 +17,8 @@ public class TalkDataScriptable : ScriptableObject
             return ContainsGags != string.Empty;
         }
     }
+
+    public string Title;
     public TalkSection[] Sections;
 }
 

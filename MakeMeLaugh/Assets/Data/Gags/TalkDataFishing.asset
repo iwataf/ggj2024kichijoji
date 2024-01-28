@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
   m_Name: TalkDataFishing
   m_EditorClassIdentifier: 
+  Title: "\u91E3\u308A"
   Sections:
   - Name: "\u304A\u3058\u3055\u3093"
     Talk: "\u30E1\u30B0\u3061\u3083\u3093\u3001\u304A\u4F11\u307F\u306E\u65E5\u306F\u4F55\u3057\u3066\u308B\u306E\uFF1F"

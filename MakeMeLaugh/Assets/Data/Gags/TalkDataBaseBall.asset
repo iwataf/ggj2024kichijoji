@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
   m_Name: TalkDataBaseBall
   m_EditorClassIdentifier: 
+  Title: "\u91CE\u7403"
   Sections:
   - Name: "\u304A\u3058\u3055\u3093"
     Talk: "\u6700\u8FD1\u30D7\u30ED\u91CE\u7403\u306E\u8A66\u5408\u3092\u307F\u3066\u30B5\u30019\u56DE\u8868\u30672-0\u306E\u3068\u3053\u308D\u3067\u653B\u5B88\u4EA4\u66FF\u3057\u305F\u306E\u306D"

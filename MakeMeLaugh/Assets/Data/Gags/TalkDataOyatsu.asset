@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
   m_Name: TalkDataOyatsu
   m_EditorClassIdentifier: 
+  Title: "\u304A\u3084\u3064"
   Sections:
   - Name: "\u304A\u3058\u3055\u3093"
     Talk: "\u3053\u306E\u9593\u3046\u3061\u306E\u7525\u3063\u5B50\u304C\u306D\u3001\u304A\u663C\u3054\u98EF\u3092\u98DF\u3079\u305F\u5F8C\u3059\u3050\u306B\u3069\u3046\u3057\u3066\u3082\u304A\u3084\u3064\u304C\u98DF\u3079\u305F\u3044\u3063\u3066\u6CE3\u304D\u51FA\u3057\u3061\u3083\u3063\u3066"

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
   m_Name: TalkDataKusshon
   m_EditorClassIdentifier: 
+  Title: "\u30AF\u30C3\u30B7\u30E7\u30F3"
   Sections:
   - Name: "\u304A\u3058\u3055\u3093"
     Talk: "\u3053\u306E\u524D\u30B5\u30FC\u3001\u304A\u3046\u3061\u306E\u62BC\u3057\u5165\u308C\u6383\u9664\u3057\u3066\u3066\u3001\u61D0\u304B\u3057\u3044\u30AF\u30C3\u30B7\u30E7\u30F3\u304C\u51FA\u3066\u304D\u3066\u305D\u306E\u307E\u307E\u5EA7\u3063\u305F\u3089"
