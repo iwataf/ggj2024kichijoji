@@ -11,6 +11,7 @@ public class InGame : MonoBehaviour
     [SerializeField] private TipsPanelCtrl _tipsPanelCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
+    [SerializeField] private StandingPictureWoman _characterWoman = default;
     [Header("Effect")]
     [SerializeField] private GameObject _correctPref = default;
     [SerializeField] private GameObject _incorrectPref = default;
@@ -28,6 +29,8 @@ public class InGame : MonoBehaviour
 
     private int _lifes = 3;
     private int _numCorrectAnswer = 0;
+
+    private int _womanLevel = 0;
 
     public void OnClickMessageWindow()
     {
@@ -201,12 +204,19 @@ public class InGame : MonoBehaviour
                 _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
                 _currentSectionIndex = 0;
 
+                _womanLevel = (_womanLevel + 1) % _characterWoman.NumPictures;
+                _characterWoman.TogglePicture(_womanLevel, 0);
+
                 Talk(_currentTalk.Sections[_currentSectionIndex]);
             }
         }
         else
         {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
+
+            int mood = (int)Mathf.Lerp(0, _characterWoman.GetMoodMax(_womanLevel), (float)_currentSectionIndex / _currentTalk.Sections.Length);
+            _characterWoman.TogglePicture(_womanLevel, mood);
+
             Talk(_currentTalk.Sections[_currentSectionIndex]);
         }
 
