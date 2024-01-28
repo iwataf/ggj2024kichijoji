@@ -173,6 +173,9 @@ public class InGame : MonoBehaviour
 
         // Character
         _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
+
+        _characterWoman.Setup();
+        _characterWoman.LockMood = false;
     }
 
     private void ApplyTalk(TalkDataScriptable.TalkSection section)
@@ -219,8 +222,11 @@ public class InGame : MonoBehaviour
         {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
 
-            int mood = (int)Mathf.Lerp(0, _characterWoman.GetMoodMax(_womanLevel), (float)_currentSectionIndex / _currentTalk.Sections.Length);
-            _characterWoman.TogglePicture(_womanLevel, mood);
+            if (_currentSectionIndex == _currentTalk.Sections.Length - 1)
+            {
+                _characterWoman.LockMood = true;
+                _characterWoman.TogglePicture(_womanLevel, 0);
+            }
 
             Talk(_currentTalk.Sections[_currentSectionIndex], false);
         }
