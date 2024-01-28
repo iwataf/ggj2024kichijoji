@@ -79,11 +79,6 @@ public class StandingPictureWoman : MonoBehaviour
     public void Reaction()
     {
         _sprite.sprite = _spriteReaction;
-
-        if (_agreementSequence == null)
-        {
-            SetupAgreementsAnime();
-        }
     }
 
     private void SetupAgreementsAnime()

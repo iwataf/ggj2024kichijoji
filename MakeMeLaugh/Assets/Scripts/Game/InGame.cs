@@ -112,10 +112,24 @@ public class InGame : MonoBehaviour
 
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
-            _characterWoman.Reaction();
-            _characterWoman.LockMood = true;
+            Action reactionCallback = () => {};
+            if (_currentTalk.Sections[_currentSectionIndex].IsContainsGags())
+            {
+                var prevLockMood = _characterWoman.LockMood;
 
-            var prevLockMood = _characterWoman.LockMood;
+                _characterWoman.Reaction();
+                _characterWoman.LockMood = true;
+
+                reactionCallback = () =>
+                {
+                    _characterWoman.LockMood = prevLockMood;
+                    _characterWoman.TogglePicture(_womanLevel, 0);
+                    if (!prevLockMood)
+                    {
+                        _characterWoman.Setup();
+                    }
+                };
+            }
 
             TweenCallback callback = () =>
             {
@@ -125,13 +139,7 @@ public class InGame : MonoBehaviour
                 }
                 else
                 {
-                    _characterWoman.LockMood = prevLockMood;
-                    _characterWoman.TogglePicture(_womanLevel, 0);
-                    if (!prevLockMood)
-                    {
-                        _characterWoman.Setup();
-                    }
-
+                    reactionCallback();
                     OnEndLeaveAnimation();
                 }
             };
