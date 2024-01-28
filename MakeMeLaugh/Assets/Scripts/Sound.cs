@@ -21,6 +21,8 @@ public class Sound : MonoBehaviour
         badEnd,
         goodEnd,
         goodEndVoice,
+        normalEnd,
+        normalEndVoice,
     }
 
     [SerializeField] private AudioClip[] bgm;

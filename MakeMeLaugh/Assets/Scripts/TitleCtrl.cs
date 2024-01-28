@@ -11,7 +11,7 @@ public class TitleCtrl : MonoBehaviour
 
     public void OnClickEnding()
     {
-        EndingData.Instance.SetEndingType(EndingData.EndingType.GOOD);
+        EndingData.Instance.SetEndingType(EndingData.EndingType.NORMAL);
         Fader.Instance.FadeOut(EndingSceneLoad);
     }
 

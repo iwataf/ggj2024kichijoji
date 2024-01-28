@@ -25,7 +25,7 @@ public class EndingScene : MonoBehaviour
                     }
                 case EndingData.EndingType.NORMAL:
                     {
-                        Sound.Instance.PlaySE(Sound.seValue.goodEnd);
+                        Sound.Instance.PlaySE(Sound.seValue.normalEnd);
                         StartCoroutine("NormalEndSequence");
                         break;
                     }
@@ -55,7 +55,12 @@ public class EndingScene : MonoBehaviour
     {
         Debug.Log("NormalEndSequence");
 
-        yield return new WaitForSeconds(5f);
+        // いい感じに待つ
+        yield return new WaitForSeconds(3f);
+
+        Sound.Instance.PlaySE(Sound.seValue.normalEndVoice);
+
+        yield return new WaitForSeconds(2f);
 
         Fader.Instance.FadeOut(() =>
         {
