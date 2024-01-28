@@ -73,7 +73,8 @@ public class InGame : MonoBehaviour
 
             _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
 
-            // TODO: 正解SEを鳴らす
+            // 正解SEを鳴らす
+            Sound.Instance.PlaySE(Sound.seValue.correct);
         }
 
         // 不正解
@@ -92,7 +93,8 @@ public class InGame : MonoBehaviour
             _lifes = Math.Max(0, _lifes - 1);
             _ingameUI.SetLifeValue(_lifes);
 
-            // TODO: 不正解SEを鳴らす
+            // 不正解SEを鳴らす
+            Sound.Instance.PlaySE(Sound.seValue.incorrect);
         }
 
         // Stop Animation

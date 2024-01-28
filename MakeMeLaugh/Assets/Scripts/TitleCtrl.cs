@@ -5,7 +5,7 @@ public class TitleCtrl : MonoBehaviour
 {
     public void OnClickGameStart()
     {
-        Sound.Instance.PlaySE(Sound.seValue.correct);
+        Sound.Instance.PlaySE(Sound.seValue.wadaiko);
         Fader.Instance.FadeOut(GameSceneLoad);
     }
 
