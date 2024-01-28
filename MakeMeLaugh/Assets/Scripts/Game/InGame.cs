@@ -155,9 +155,7 @@ public class InGame : MonoBehaviour
         }
 
         {
-            var pos = _titlePanel.transform.localPosition;
-            pos.x = -1920;
-            _titlePanel.transform.localPosition = pos;
+            _titlePanel.CanvasGroup.alpha = 0;
         }
     }
 
@@ -176,9 +174,9 @@ public class InGame : MonoBehaviour
         if (isFirstSection)
         {
             _titlePanel.TextTitle.text = title;
-            sequence.Append(_titlePanel.transform.DOLocalMoveX(0, 0.4f));
-            sequence.Append(_titlePanel.transform.DOLocalMoveX(0, 1f));
-            sequence.Append(_titlePanel.transform.DOLocalMoveX(1920, 0.4f));
+            sequence.Append(_titlePanel.CanvasGroup.DOFade(1, 0.4f).SetEase(Ease.InSine));
+            sequence.Append(_titlePanel.CanvasGroup.DOFade(1, 1f));
+            sequence.Append(_titlePanel.CanvasGroup.DOFade(0, 0.4f).SetEase(Ease.OutSine));
         }
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
