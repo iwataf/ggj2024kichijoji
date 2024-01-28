@@ -277,8 +277,29 @@ MonoBehaviour:
   _incorrectPref: {fileID: 2719619001154230043, guid: c3ddfd51a2dd890449cd6fbb4ad76f8e, type: 3}
   _concentrationLine: {fileID: 4495561583937552659, guid: 855011348b7bac544b2127863bc7c180, type: 3}
   _talks:
+  - {fileID: 11400000, guid: 76aab0b4fd541a74ea7b0e45ad8712db, type: 2}
+  - {fileID: 11400000, guid: 5388a72972075394ab380f8e747b3902, type: 2}
+  - {fileID: 11400000, guid: 834c7d2cd48a3b740abae844fa0102f2, type: 2}
+  - {fileID: 11400000, guid: 822a4fd85ad13194ba53c59006b2b008, type: 2}
+  - {fileID: 11400000, guid: b3ea4af6bf0b8fe4f97939fdce7e3b42, type: 2}
+  - {fileID: 11400000, guid: ae72380552d253745af635bdcf7fb5ab, type: 2}
+  - {fileID: 11400000, guid: 19d5c10fb7ef6674da891769eaea753f, type: 2}
+  - {fileID: 11400000, guid: 0f6d2a32445384d4bbfae2c96a5e85c3, type: 2}
+  - {fileID: 11400000, guid: a1ab3b641183b394c8b23aec014381eb, type: 2}
+  - {fileID: 11400000, guid: aa14fb6477d9e514a9e7486aeeff0714, type: 2}
+  - {fileID: 11400000, guid: 9d2de88def1a995439dc1fe034c3e4c6, type: 2}
+  - {fileID: 11400000, guid: 56bd27a413a5d3c48a2270341d2141c2, type: 2}
+  - {fileID: 11400000, guid: 80c45434aebeb154cb0ae375a9068fb3, type: 2}
+  - {fileID: 11400000, guid: 45eb15141d681a64f9ce8289f3f6ce43, type: 2}
+  - {fileID: 11400000, guid: 6b7af21319f9c004d9bd49335204c994, type: 2}
+  - {fileID: 11400000, guid: 0ef8120698bc6bb4980b280930c37294, type: 2}
+  - {fileID: 11400000, guid: 3f348ecc582af54488dd92f575b23879, type: 2}
   - {fileID: 11400000, guid: 0b9e8d855abe76745800cc992cde482d, type: 2}
   - {fileID: 11400000, guid: ffa3735322de4f142848bedd89ff7f0d, type: 2}
+  - {fileID: 11400000, guid: 54df055893224674b82049db79104312, type: 2}
+  - {fileID: 11400000, guid: fde713d713fde1a47a273f6339e1b0ee, type: 2}
+  - {fileID: 11400000, guid: d46587d62b76641428c967239081fc71, type: 2}
+  - {fileID: 11400000, guid: 59a0209b52e354d418efa26b7104ef77, type: 2}
 --- !u!1 &152635080
 GameObject:
   m_ObjectHideFlags: 0
