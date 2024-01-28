@@ -72,7 +72,7 @@ public class InGame : MonoBehaviour
             var text = _messagePanel.TextTalk.text;
             _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
 
-            _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
+            _characterOji.SetEmotion(StandingPicture.Emotion.Glasses);
 
             // 正解SEを鳴らす
             Sound.Instance.PlaySE(Sound.seValue.correct);
@@ -199,11 +199,13 @@ public class InGame : MonoBehaviour
     private void OnEndEnterAnimation()
     {
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
     }
 
     private void OnEndWaitAnimation()
     {
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
     }
 
     private void OnEndLeaveAnimation()

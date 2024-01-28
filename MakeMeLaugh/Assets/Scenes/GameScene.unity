@@ -688,6 +688,8 @@ MonoBehaviour:
     Image: {fileID: 21300000, guid: 295188ea047d8a944986bff76b8231cf, type: 3}
   - Emotion: 1
     Image: {fileID: 21300000, guid: 6955184cbbf1acf4da4b8ab14e3e6ca2, type: 3}
+  - Emotion: 2
+    Image: {fileID: 21300000, guid: b59fabbd2823bc9409c73f9b10acab1d, type: 3}
 --- !u!212 &343050632
 SpriteRenderer:
   m_ObjectHideFlags: 0

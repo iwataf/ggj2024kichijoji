@@ -8,6 +8,7 @@ public class StandingPicture : MonoBehaviour
     {
         Standard,
         Smile,
+        Glasses,
     }
 
     [Serializable]
