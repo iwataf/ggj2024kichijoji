@@ -9,6 +9,12 @@ public class TitleCtrl : MonoBehaviour
         Fader.Instance.FadeOut(GameSceneLoad);
     }
 
+    public void OnClickEnding()
+    {
+        EndingData.Instance.SetEndingType(EndingData.EndingType.BAD);
+        Fader.Instance.FadeOut(EndingSceneLoad);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,5 +31,10 @@ public class TitleCtrl : MonoBehaviour
     private void GameSceneLoad()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    private void EndingSceneLoad()
+    {
+        SceneManager.LoadScene("EndingScene");
     }
 }
