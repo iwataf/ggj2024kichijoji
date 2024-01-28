@@ -980,6 +980,7 @@ GameObject:
   - component: {fileID: 3368772888687616680}
   - component: {fileID: 1070562313164444681}
   - component: {fileID: 228135019794859549}
+  - component: {fileID: 8534443931698931676}
   m_Layer: 5
   m_Name: TipsPanel
   m_TagString: Untagged
@@ -1040,3 +1041,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tipsPanelView: {fileID: 1070562313164444681}
+  _canvasGroup: {fileID: 8534443931698931676}
+--- !u!225 &8534443931698931676
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7806821455764916488}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

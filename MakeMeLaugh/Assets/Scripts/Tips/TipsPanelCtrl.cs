@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class TipsPanelCtrl : MonoBehaviour
 {
 
     [SerializeField] private TipsPanelView tipsPanelView;
+    [SerializeField] private CanvasGroup _canvasGroup = default;
 
     private Action closeAction;
 
@@ -18,11 +20,19 @@ public class TipsPanelCtrl : MonoBehaviour
     {
         this.closeAction = closeAction;
         this.gameObject.SetActive(true);
+
+        _canvasGroup.interactable = false;
+        _canvasGroup.alpha = 0;
+        _canvasGroup.DOFade(1, 0.25f).OnComplete(() => { _canvasGroup.interactable = true; });
     }
 
     private void OnClosePanel()
     {
-        closeAction?.Invoke();
-        this.gameObject.SetActive(false);
+        _canvasGroup.interactable = false;
+        _canvasGroup.DOFade(0, 0.25f).OnComplete(() =>
+        {
+            closeAction?.Invoke();
+            this.gameObject.SetActive(false);
+        });
     }
 }
