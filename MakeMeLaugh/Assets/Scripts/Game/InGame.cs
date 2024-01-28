@@ -48,13 +48,16 @@ public class InGame : MonoBehaviour
             effect.transform.position = new Vector3(worldPos.x, worldPos.y, 0);
             effect.transform.localScale = Vector3.zero;
 
+            var scaleValBig = 1.42f;
+            var scaleValSmall = 1.35f;
+
             var sequence = DOTween.Sequence();
-            sequence.Append(effect.transform.DOScale(4.0f, 0.7f).SetEase(Ease.InSine));
+            sequence.Append(effect.transform.DOScale(scaleValBig, 0.7f).SetEase(Ease.InSine));
             sequence.Join(effect.transform.DORotate(new Vector3(0, 0, 720), 0.7f, RotateMode.WorldAxisAdd));
-            sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-            sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
-            sequence.Append(effect.transform.DOScale(3.8f, 0.1f));
-            sequence.Append(effect.transform.DOScale(4.0f, 0.1f));
+            sequence.Append(effect.transform.DOScale(scaleValSmall, 0.1f));
+            sequence.Append(effect.transform.DOScale(scaleValBig, 0.1f));
+            sequence.Append(effect.transform.DOScale(scaleValSmall, 0.1f));
+            sequence.Append(effect.transform.DOScale(scaleValBig, 0.1f));
             sequence.Append(effect.transform.DOScale(0.0f, 0.3f).SetEase(Ease.OutSine));
 
             sequence.OnComplete(() => { Destroy(effect); });
