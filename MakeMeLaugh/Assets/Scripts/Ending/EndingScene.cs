@@ -13,6 +13,8 @@ public class EndingScene : MonoBehaviour
         _endingImage.sprite = _endingSprites[(int)EndingData.Instance.GetEndingType()];
         Fader.Instance.FadeIn(() =>
         {
+            Sound.Instance.StopBGM();
+            Sound.Instance.PlaySE(Sound.seValue.badEnd);
             StartCoroutine("EndSequence");
         });
     }
@@ -21,7 +23,7 @@ public class EndingScene : MonoBehaviour
     {
         Debug.Log("EndSequence");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         Fader.Instance.FadeOut(() =>
         {
