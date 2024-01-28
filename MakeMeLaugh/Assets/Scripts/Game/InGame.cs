@@ -136,7 +136,7 @@ public class InGame : MonoBehaviour
         {
             OpenTips(() =>
             {
-                Talk(_currentTalk.Sections.First());
+                Talk(_currentTalk.Sections.First(), true);
             });
         });
     }
@@ -150,17 +150,22 @@ public class InGame : MonoBehaviour
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    private void Talk(TalkDataScriptable.TalkSection section)
+    private void Talk(TalkDataScriptable.TalkSection section, bool isFirstSection)
     {
         ApplyTalk(section);
 
         // 初期設定
         SetupMessagePanelStartPotision();
 
+        var startPosX = _messagePanel.transform.localPosition.x;
         var waitTime = section.Talk.Length * 0.05f + 1.0f;
 
         // Animation
         var sequence = DOTween.Sequence();
+        if (isFirstSection)
+        {
+            sequence.Append(_messagePanel.transform.DOLocalMoveX(startPosX, 0.8f));
+        }
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(1920, 0.8f).OnComplete(OnEndLeaveAnimation).SetEase(Ease.OutSine));
@@ -168,6 +173,9 @@ public class InGame : MonoBehaviour
 
         // Character
         _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
+
+        _characterWoman.Setup();
+        _characterWoman.LockMood = false;
     }
 
     private void ApplyTalk(TalkDataScriptable.TalkSection section)
@@ -207,17 +215,20 @@ public class InGame : MonoBehaviour
                 _womanLevel = (_womanLevel + 1) % _characterWoman.NumPictures;
                 _characterWoman.TogglePicture(_womanLevel, 0);
 
-                Talk(_currentTalk.Sections[_currentSectionIndex]);
+                Talk(_currentTalk.Sections[_currentSectionIndex], true);
             }
         }
         else
         {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
 
-            int mood = (int)Mathf.Lerp(0, _characterWoman.GetMoodMax(_womanLevel), (float)_currentSectionIndex / _currentTalk.Sections.Length);
-            _characterWoman.TogglePicture(_womanLevel, mood);
+            if (_currentSectionIndex == _currentTalk.Sections.Length - 1)
+            {
+                _characterWoman.LockMood = true;
+                _characterWoman.TogglePicture(_womanLevel, 0);
+            }
 
-            Talk(_currentTalk.Sections[_currentSectionIndex]);
+            Talk(_currentTalk.Sections[_currentSectionIndex], false);
         }
 
         _answered = false;
