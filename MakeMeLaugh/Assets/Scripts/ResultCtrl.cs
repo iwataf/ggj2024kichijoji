@@ -20,7 +20,21 @@ public class ResultCtrl : MonoBehaviour
 
     public void OpenResult(int score, int maxValue, System.Action<bool> action)
     {
-        _resultView.SetScoreText(score + "/" + maxValue);
+        var tabel = new string[] { "<sprite=9>", "<sprite=0>", "<sprite=1>", "<sprite=2>", "<sprite=3>", "<sprite=4>", "<sprite=5>", "<sprite=6>", "<sprite=7>", "<sprite=8>"};
+
+        string scoreString = "";
+        foreach(var s in score.ToString())
+        {
+            scoreString += tabel[int.Parse($"{s}")];
+        }
+
+        string maxValueString = "";
+        foreach(var s in maxValue.ToString())
+        {
+            maxValueString += tabel[int.Parse($"{s}")];
+        }
+
+        _resultView.SetScoreText(scoreString + "<sprite=10>" + maxValueString);
         gameObject.SetActive(true);
         m_isClickCloseButton = action;
 
