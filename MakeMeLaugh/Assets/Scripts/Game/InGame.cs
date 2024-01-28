@@ -10,6 +10,7 @@ public class InGame : MonoBehaviour
     [SerializeField] private ResultCtrl _resultCtrl = default;
     [SerializeField] private TipsPanelCtrl _tipsPanelCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
+    [SerializeField] private TitlePanel _titlePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [SerializeField] private StandingPictureWoman _characterWoman = default;
     [Header("Effect")]
@@ -138,21 +139,29 @@ public class InGame : MonoBehaviour
         {
             OpenTips(() =>
             {
-                Talk(_currentTalk.Sections.First(), true);
+                Talk(_currentTalk.Sections.First(), true, _currentTalk.Title);
             });
         });
     }
 
     private void SetupMessagePanelStartPotision()
     {
-        var pos = _messagePanel.transform.localPosition;
-        pos.x = -1920;
-        _messagePanel.transform.localPosition = pos;
+        {
+            var pos = _messagePanel.transform.localPosition;
+            pos.x = -1920;
+            _messagePanel.transform.localPosition = pos;
 
-        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        }
+
+        {
+            var pos = _titlePanel.transform.localPosition;
+            pos.x = -1920;
+            _titlePanel.transform.localPosition = pos;
+        }
     }
 
-    private void Talk(TalkDataScriptable.TalkSection section, bool isFirstSection)
+    private void Talk(TalkDataScriptable.TalkSection section, bool isFirstSection, string title=null)
     {
         ApplyTalk(section);
 
@@ -166,7 +175,10 @@ public class InGame : MonoBehaviour
         var sequence = DOTween.Sequence();
         if (isFirstSection)
         {
-            sequence.Append(_messagePanel.transform.DOLocalMoveX(startPosX, 0.8f));
+            _titlePanel.TextTitle.text = title;
+            sequence.Append(_titlePanel.transform.DOLocalMoveX(0, 0.4f));
+            sequence.Append(_titlePanel.transform.DOLocalMoveX(0, 1f));
+            sequence.Append(_titlePanel.transform.DOLocalMoveX(1920, 0.4f));
         }
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, 0.8f).OnComplete(OnEndEnterAnimation).SetEase(Ease.InSine));
         sequence.Append(_messagePanel.transform.DOLocalMoveX(0, waitTime).OnComplete(OnEndWaitAnimation));
@@ -217,7 +229,7 @@ public class InGame : MonoBehaviour
                 _womanLevel = (_womanLevel + 1) % _characterWoman.NumPictures;
                 _characterWoman.TogglePicture(_womanLevel, 0);
 
-                Talk(_currentTalk.Sections[_currentSectionIndex], true);
+                Talk(_currentTalk.Sections[_currentSectionIndex], true, _currentTalk.Title);
             }
         }
         else
