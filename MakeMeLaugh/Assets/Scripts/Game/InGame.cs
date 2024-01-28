@@ -1,13 +1,14 @@
+using DG.Tweening;
 using System;
 using System.Linq;
 using UnityEngine;
-using DG.Tweening;
 using UnityEngine.SceneManagement;
 
 public class InGame : MonoBehaviour
 {
     [SerializeField] private InGameUI _ingameUI = default;
     [SerializeField] private ResultCtrl _resultCtrl = default;
+    [SerializeField] private TipsPanelCtrl _tipsPanelCtrl = default;
     [SerializeField] private MessagePanel _messagePanel = default;
     [SerializeField] private StandingPicture _characterOji = default;
     [Header("Effect")]
@@ -102,7 +103,9 @@ public class InGame : MonoBehaviour
                 if (isGameOver)
                 {
                     OpenResult();
-                } else {
+                }
+                else
+                {
                     OnEndLeaveAnimation();
                 }
             };
@@ -116,28 +119,38 @@ public class InGame : MonoBehaviour
 
     private void Start()
     {
+        SetupMessagePanelStartPotision();
+
         // Talk
         _currentTalkIndex = 0;
-        Talk(_currentTalk.Sections.First());
-
         _ingameUI.SetLifeValue(_lifes);
 
         Sound.Instance.PlayBGM(Sound.bgmValue.game);
 
-        Fader.Instance.FadeIn();
+        Fader.Instance.FadeIn(() =>
+        {
+            OpenTips(() =>
+            {
+                Talk(_currentTalk.Sections.First());
+            });
+        });
     }
 
-    private void Talk(TalkDataScriptable.TalkSection section) {
+    private void SetupMessagePanelStartPotision()
+    {
+        var pos = _messagePanel.transform.localPosition;
+        pos.x = -1920;
+        _messagePanel.transform.localPosition = pos;
+
+        _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
+    }
+
+    private void Talk(TalkDataScriptable.TalkSection section)
+    {
         ApplyTalk(section);
 
         // 初期設定
-        {
-            var pos = _messagePanel.transform.localPosition;
-            pos.x = -1920;
-            _messagePanel.transform.localPosition = pos;
-
-            _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        }
+        SetupMessagePanelStartPotision();
 
         var waitTime = section.Talk.Length * 0.05f + 1.0f;
 
@@ -180,13 +193,17 @@ public class InGame : MonoBehaviour
             if (_talks.Length <= _currentTalkIndex + 1)
             {
                 OpenResult();
-            } else {
+            }
+            else
+            {
                 _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
                 _currentSectionIndex = 0;
 
                 Talk(_currentTalk.Sections[_currentSectionIndex]);
             }
-        } else {
+        }
+        else
+        {
             _currentSectionIndex = (_currentSectionIndex + 1) % _currentTalk.Sections.Length;
             Talk(_currentTalk.Sections[_currentSectionIndex]);
         }
@@ -197,7 +214,7 @@ public class InGame : MonoBehaviour
     private void OpenResult()
     {
         int sumQuestion = 0;
-        foreach(var talk in _talks)
+        foreach (var talk in _talks)
         {
             sumQuestion += talk.Sections.Count(s => s.IsContainsGags());
         }
@@ -206,5 +223,10 @@ public class InGame : MonoBehaviour
         {
             Fader.Instance.FadeOut(() => { SceneManager.LoadScene("Title"); });
         });
+    }
+
+    private void OpenTips(Action closeAction)
+    {
+        _tipsPanelCtrl.OpenTips(closeAction);
     }
 }
