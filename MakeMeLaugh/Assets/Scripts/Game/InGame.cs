@@ -106,7 +106,7 @@ public class InGame : MonoBehaviour
             {
                 if (isGameOver)
                 {
-                    OpenResult();
+                    OpenEnding(EndingData.EndingType.BAD);
                 }
                 else
                 {
@@ -232,6 +232,12 @@ public class InGame : MonoBehaviour
         }
 
         _answered = false;
+    }
+
+    private void OpenEnding(EndingData.EndingType endingType)
+    {
+        EndingData.Instance.SetEndingType(endingType);
+        Fader.Instance.FadeOut(() => { SceneManager.LoadScene("EndingScene"); });
     }
 
     private void OpenResult()
