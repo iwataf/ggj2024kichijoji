@@ -33,6 +33,8 @@ public class InGame : MonoBehaviour
 
     private int _womanLevel = 0;
 
+    private Sequence _ojiTalkSequence = null;
+
     public void OnClickMessageWindow()
     {
         // Create effect
@@ -73,6 +75,11 @@ public class InGame : MonoBehaviour
             _messagePanel.TextTalk.text = text.Replace(correctText, $"<color=\"red\">{correctText}</color>");
 
             _characterOji.SetEmotion(StandingPicture.Emotion.Glasses);
+            if (_ojiTalkSequence != null)
+            {
+                _ojiTalkSequence.Kill();
+                _ojiTalkSequence = null;
+            }
 
             // 正解SEを鳴らす
             Sound.Instance.PlaySE(Sound.seValue.correct);
@@ -200,12 +207,31 @@ public class InGame : MonoBehaviour
     {
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = true;
         _characterOji.SetEmotion(StandingPicture.Emotion.Smile);
+
+        var firstAnimation = _characterOji.transform.DOLocalRotate(new Vector3(0, 0, 5f), 0.25f).SetRelative();
+        firstAnimation.OnComplete(() => {
+            var sequence = DOTween.Sequence();
+            sequence.Append(_characterOji.transform.DOLocalRotate(new Vector3(0, 0, -10f), 0.5f).SetRelative());
+            sequence.Append(_characterOji.transform.DOLocalRotate(new Vector3(0, 0, 10f), 0.5f).SetRelative());
+            sequence.SetLoops(-1);
+
+            _ojiTalkSequence = sequence;
+        });
     }
 
     private void OnEndWaitAnimation()
     {
         _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
         _characterOji.SetEmotion(StandingPicture.Emotion.Standard);
+
+        if (_ojiTalkSequence != null)
+        {
+            _ojiTalkSequence.Kill();
+            _ojiTalkSequence = null;
+        }
+
+        var t = Mathf.Abs(_characterOji.transform.localEulerAngles.z) / 5f;
+        _characterOji.transform.DOLocalRotate(Vector3.zero, Mathf.Lerp(0f, 0.25f, t));
     }
 
     private void OnEndLeaveAnimation()
