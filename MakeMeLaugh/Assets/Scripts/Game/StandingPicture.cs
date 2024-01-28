@@ -1,20 +1,18 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Unity.VisualStudio.Editor;
-using TMPro;
 using UnityEngine;
 
 public class StandingPicture : MonoBehaviour
 {
-    public enum Emotion {
+    public enum Emotion
+    {
         Standard,
         Smile,
     }
 
     [Serializable]
-    public class PictureData {
+    public class PictureData
+    {
         public Emotion Emotion;
         public Sprite Image;
     }
@@ -28,7 +26,9 @@ public class StandingPicture : MonoBehaviour
         if (result == null)
         {
             _sprite.sprite = _pictures.First().Image;
-        } else {
+        }
+        else
+        {
             _sprite.sprite = result.Image;
         }
     }
