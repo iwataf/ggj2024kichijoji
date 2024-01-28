@@ -112,6 +112,11 @@ public class InGame : MonoBehaviour
 
             _messagePanel.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
+            _characterWoman.Reaction();
+            _characterWoman.LockMood = true;
+
+            var prevLockMood = _characterWoman.LockMood;
+
             TweenCallback callback = () =>
             {
                 if (isGameOver)
@@ -120,6 +125,13 @@ public class InGame : MonoBehaviour
                 }
                 else
                 {
+                    _characterWoman.LockMood = prevLockMood;
+                    _characterWoman.TogglePicture(_womanLevel, 0);
+                    if (!prevLockMood)
+                    {
+                        _characterWoman.Setup();
+                    }
+
                     OnEndLeaveAnimation();
                 }
             };
@@ -252,7 +264,7 @@ public class InGame : MonoBehaviour
                 _currentTalkIndex = (_currentTalkIndex + 1) % _talks.Length;
                 _currentSectionIndex = 0;
 
-                _womanLevel = (_womanLevel + 1) % _characterWoman.NumPictures;
+                _womanLevel = Math.Min(_womanLevel + 1, _characterWoman.NumPictures - 1);
                 _characterWoman.TogglePicture(_womanLevel, 0);
 
                 Talk(_currentTalk.Sections[_currentSectionIndex], true, _currentTalk.Title);
@@ -282,6 +294,8 @@ public class InGame : MonoBehaviour
 
     private void OpenResult()
     {
+        _characterWoman.LockMood = true;
+
         int sumQuestion = 0;
         foreach (var talk in _talks)
         {

@@ -965,9 +965,7 @@ MonoBehaviour:
   - Levels:
     - {fileID: 21300000, guid: 3873af6e6745f1d4bbcf44001280ee97, type: 3}
     - {fileID: 21300000, guid: 77f90ef01ad02d546975b428eaf605e7, type: 3}
-  - Levels:
-    - {fileID: 21300000, guid: b13ecd35b1c048a479144ca79894fd30, type: 3}
-    - {fileID: 21300000, guid: b13ecd35b1c048a479144ca79894fd30, type: 3}
+  _spriteReaction: {fileID: 21300000, guid: b13ecd35b1c048a479144ca79894fd30, type: 3}
   LockMood: 1
 --- !u!1 &460423065
 GameObject:

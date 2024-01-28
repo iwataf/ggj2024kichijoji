@@ -1,5 +1,8 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class StandingPictureWoman : MonoBehaviour
 {
@@ -10,10 +13,13 @@ public class StandingPictureWoman : MonoBehaviour
 
     [SerializeField] private SpriteRenderer _sprite = default;
     [SerializeField] private Picture[] _pictures = default;
+    [SerializeField] private Sprite _spriteReaction = default;
 
     public int NumPictures => _pictures.Length;
     public int GetMoodMax(int index) => _pictures[index].Levels.Length;
     public bool LockMood = true;
+
+    private DG.Tweening.Sequence _agreementSequence = null;
 
     private float CalcWaitTime(int level)
     {
@@ -39,7 +45,7 @@ public class StandingPictureWoman : MonoBehaviour
 
     private void Update()
     {
-        if (_waitingSec == null)
+        if (LockMood || _waitingSec == null)
         {
             return;
         }
@@ -49,19 +55,43 @@ public class StandingPictureWoman : MonoBehaviour
         {
             _waitingSec = null;
 
-            if (!LockMood)
-            {
-                _moodIndex = (_moodIndex + 1) % GetMoodMax(_level);
-                _sprite.sprite = _pictures[_level].Levels[_moodIndex];
+            var nextMood = (_moodIndex + 1) % GetMoodMax(_level);
 
-                _waitingSec = CalcWaitTime(_level);
-            }
+            TogglePicture(_level, nextMood);
+
+            _waitingSec = CalcWaitTime(_level);
         }
     }
 
-    public void TogglePicture(int index, int levelIndex)
+    public void TogglePicture(int level, int moodIndex)
     {
-        _level = index;
-        _sprite.sprite = _pictures[index].Levels[levelIndex];
+        _sprite.sprite = _pictures[level].Levels[moodIndex];
+
+        if (_agreementSequence == null && (_level != level || _moodIndex != moodIndex))
+        {
+            SetupAgreementsAnime();
+        }
+
+        _level = level;
+        _moodIndex = moodIndex;
+    }
+
+    public void Reaction()
+    {
+        _sprite.sprite = _spriteReaction;
+
+        if (_agreementSequence == null)
+        {
+            SetupAgreementsAnime();
+        }
+    }
+
+    private void SetupAgreementsAnime()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.Append(transform.DOMoveY(-0.5f, 0.2f).SetRelative());
+        sequence.Append(transform.DOMoveY(0.5f, 0.2f).SetRelative());
+        sequence.OnComplete(() => { _agreementSequence = null; });
+        _agreementSequence = sequence;
     }
 }
