@@ -19,6 +19,8 @@ public class Sound : MonoBehaviour
         tukkomi,
         wadaiko,
         badEnd,
+        goodEnd,
+        goodEndVoice,
     }
 
     [SerializeField] private AudioClip[] bgm;
