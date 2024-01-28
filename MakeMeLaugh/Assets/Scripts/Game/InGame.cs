@@ -16,8 +16,9 @@ public class InGame : MonoBehaviour
     [SerializeField] private GameObject _incorrectPref = default;
     [SerializeField] private GameObject _concentrationLine = default;
     [Header("Talk")]
-    [SerializeField] private TalkDataScriptable[] _talks = default;
+    [SerializeField] private TalkDataScriptable[] _talkMaster = default;
 
+    private TalkDataScriptable[] _talks = default;
     private TalkDataScriptable _currentTalk => _talks[_currentTalkIndex];
     private int _currentTalkIndex = 0;
 
@@ -124,6 +125,7 @@ public class InGame : MonoBehaviour
         // Talk
         _currentTalkIndex = 0;
         _ingameUI.SetLifeValue(_lifes);
+        _talks = _talkMaster.OrderBy(i => Guid.NewGuid()).Take(5).ToArray();
 
         Sound.Instance.PlayBGM(Sound.bgmValue.game);
 
