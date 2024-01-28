@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
+  m_Name: TalkDataToilette
+  m_EditorClassIdentifier: 
+  Sections:
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u4ECA\u65E5\u671D\u96FB\u8ECA\u306B\u4E57\u3063\u3066\u305F\u3068\u304D\u306E\u8A71\u306A\u3093\u3060\u3051\u3069\u3001\u6025\u306B\u304A\u8179\u304C\u75DB\u304F\u306A\u3063\u3061\u3083\u3063\u3066\u9014\u4E2D\u4E0B\u8ECA\u3057\u305F\u3093\u3060\u3088\u306D"
+    ContainsGags: 
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u306A\u3093\u3068\u304B\u30C8\u30A4\u30EC\u306B\u99C6\u3051\u8FBC\u3093\u3067\u7121\u4E8B\u30B9\u30C3\u30AD\u30EA\u3057\u305F\u3093\u3060\u3051\u3069\u3001\u6700\u5F8C\u306B\u4F1A\u3063\u305F\u306E\u308210\u5E74\u524D\u3068\u304B\u3060\u304B\u3089\u304A\u4E92\u3044\u304A\u4E45\u3057\u3076\u308A\u3063\u3066\u6328\u62F6\u3057\u305F\u3093\u30C0\u30A1"
+    ContainsGags: "\u3076\u308A"

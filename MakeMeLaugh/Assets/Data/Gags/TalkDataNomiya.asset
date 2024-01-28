@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4340e881e364464ab99e3cbcf8892d5, type: 3}
+  m_Name: TalkDataNomiya
+  m_EditorClassIdentifier: 
+  Sections:
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u4F11\u65E5\u306B\u3053\u3046\u3084\u3063\u3066\u3001\u3075\u3089\u3063\u3068\u98F2\u307F\u5C4B\u306B\u5165\u308B\u306E\u306F\u697D\u3057\u3044\u3093\u3060\u3051\u3069\u306D\u3047\r"
+    ContainsGags: 
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u3053\u306E\u524D\u306F\u4E0A\u53F8\u306E\u63A5\u5F85\u306B\u4ED8\u304D\u5408\u308F\u3055\u308C\u3061\u3083\u3063\u3066"
+    ContainsGags: 
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u305D\u3046\u306A\u308B\u3068\u50D5\u304C\u80C3\u708E\u306A\u3093\u3066\u8A00\u3048\u3093\u308F\u3051\u3067\u3001\u4F53\u306B\u5927\u5206\u7121\u7406\u3055\u305B\u3061\u3083\u3063\u305F\u306A\u3041"
+    ContainsGags: "\u80C3\u708E\u306A\u3093\u3066\u8A00\u3048\u3093"
+  - Name: "\u304A\u3058\u3055\u3093"
+    Talk: "\u304A\u9152\u3082\u4ED8\u304D\u5408\u3044\u3082\u307B\u3069\u307B\u3069\u304C\u4E00\u756A\u3060\u30CD"
+    ContainsGags: 
