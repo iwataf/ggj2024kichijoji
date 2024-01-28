@@ -258,7 +258,7 @@ MonoBehaviour:
   _endingSprites:
   - {fileID: 21300000, guid: c7d1569973cf48447a11cb2aec13db26, type: 3}
   - {fileID: 21300000, guid: 6acc74ca096cb5d4b91a040b8b8f0b54, type: 3}
-  - {fileID: 21300000, guid: 2aead2ef27b4a9c4cbb6a87452e5115d, type: 3}
+  - {fileID: 21300000, guid: e1174d2276d749548b5ef6064f1ac541, type: 3}
 --- !u!4 &366200386
 Transform:
   m_ObjectHideFlags: 0
